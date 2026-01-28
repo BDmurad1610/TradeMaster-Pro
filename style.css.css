@@ -1,0 +1,81 @@
+/* style.css - Main Stylesheet */
+:root {
+    --primary: #4A6FA5;
+    --primary-dark: #385D8A;
+    --secondary: #FF6B6B;
+    --success: #00ff88;
+    --danger: #F44336;
+    --warning: #FF9800;
+    --info: #00d9ff;
+    --dark: #0f2027;
+    --light: #F8F9FA;
+    --gray: #6C757D;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+    min-height: 100vh;
+}
+
+/* Navigation */
+.navbar {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--success);
+}
+
+.logo span {
+    color: var(--info);
+}
+
+/* Buttons */
+.btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, var(--success), var(--info));
+    color: var(--dark);
+}
+
+/* Main Content */
+.container {
+    max-width: 1400px;
+    margin: 80px auto 20px;
+    padding: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    .navbar {
+        padding: 1rem;
+    }
+}

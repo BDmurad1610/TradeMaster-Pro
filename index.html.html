@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeMaster Pro - Master Trading</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Quick styles for initial page */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            background: rgba(255,255,255,0.1);
+            padding: 3rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #00ff88;
+        }
+        h1 span { color: #00d9ff; }
+        p { font-size: 1.2rem; margin-bottom: 2rem; color: #ccc; }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .feature {
+            background: rgba(255,255,255,0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #00ff88, #00d9ff);
+            color: #0f2027;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0.5rem;
+            transition: transform 0.3s;
+        }
+        .btn:hover { transform: translateY(-3px); }
+        .warning {
+            background: rgba(255,215,0,0.2);
+            border: 1px solid gold;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+        @media (max-width: 768px) {
+            .container { padding: 2rem; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Trade<span>Master</span> Pro</h1>
+        <p>Master Trading from Zero to Hero</p>
+        
+        <div class="warning">
+            <h3><i class="fas fa-exclamation-triangle"></i> Important Notice</h3>
+            <p>If you see "Improve this page", wait 2-3 minutes for GitHub Pages to deploy.</p>
+            <p>Refresh the page after 3 minutes.</p>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-chart-line fa-2x" style="color:#00ff88;"></i>
+                <h3>Live Trading</h3>
+                <p>Real-time charts & signals</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-graduation-cap fa-2x" style="color:#00d9ff;"></i>
+                <h3>Learning Platform</h3>
+                <p>Step-by-step education</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-handshake fa-2x" style="color:#ff9900;"></i>
+                <h3>Referral System</h3>
+                <p>40% commission earnings</p>
+            </div>
+        </div>
+        
+        <div style="margin-top: 2rem;">
+            <a href="login.html" class="btn">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+            <a href="dashboard.html" class="btn">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+        </div>
+        
+        <div style="margin-top: 2rem; font-size: 0.9rem; color: #999;">
+            <p>If page doesn't load properly, check GitHub Pages settings.</p>
+            <p>Settings → Pages → Source: main branch, / (root) folder</p>
+        </div>
+    </div>
+    
+    <script>
+        // Check if page loaded correctly
+        setTimeout(() => {
+            if (document.title.includes("Improve this page")) {
+                window.location.reload();
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
