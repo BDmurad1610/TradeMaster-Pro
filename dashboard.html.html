@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TradeMaster Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0f2027;
+            color: white;
+        }
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2rem 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00ff88;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .logo span {
+            color: #00d9ff;
+        }
+
+        .user-info {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00ff88, #00d9ff);
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .user-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-tier {
+            background: rgba(255, 215, 0, 0.2);
+            color: gold;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-bottom: 1rem;
+        }
+
+        .nav-menu a {
+            color: #cccccc;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.8rem;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+
+        .stat-card h3 {
+            color: #cccccc;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00ff88;
+        }
+
+        .stat-change {
+            font-size: 0.9rem;
+            color: #00d9ff;
+        }
+
+        /* Charts Section */
+        .charts-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+
+        /* Referral Section */
+        .referral-section {
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .referral-link {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Withdrawal Section */
+        .withdrawal-section {
+            background: rgba(0, 217, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+
+        .withdrawal-form input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #00ff88, #00d9ff);
+            color: #0f2027;
+        }
+
+        .btn-disabled {
+            background: #666;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">Trade<span>Master</span> Pro</div>
+            
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">
+                    <!-- Avatar will be set by JavaScript -->
+                </div>
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-tier" id="userTier">Free User</div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="learning.html"><i class="fas fa-graduation-cap"></i> Learning</a></li>
+                <li><a href="#charts"><i class="fas fa-chart-line"></i> Live Charts</a></li>
+                <li><a href="premium.html"><i class="fas fa-crown"></i> Premium</a></li>
+                <li><a href="#referrals"><i class="fas fa-handshake"></i> Referrals</a></li>
+                <li><a href="#withdraw"><i class="fas fa-wallet"></i> Withdraw</a></li>
+                <li><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1>Dashboard</h1>
+                <div id="balanceInfo">
+                    <!-- Balance will be loaded by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <h3>Total Balance</h3>
+                    <div class="stat-value" id="totalBalance">$0.00</div>
+                    <div class="stat-change" id="balanceChange">+0% today</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Commission Earned</h3>
+                    <div class="stat-value" id="commissionEarned">$0.00</div>
+                    <div class="stat-change">Available for withdrawal</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Active Referrals</h3>
+                    <div class="stat-value" id="activeReferrals">0</div>
+                    <div class="stat-change" id="referralGrowth">+0 this month</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Learning Progress</h3>
+                    <div class="stat-value" id="learningProgress">0%</div>
+                    <div class="stat-change">Continue learning</div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-section">
+                <!-- Trading Chart -->
+                <div class="chart-container">
+                    <h2><i class="fas fa-chart-line"></i> BTC/USDT Live Chart</h2>
+                    <div id="tradingChart" style="height: 400px;">
+                        <!-- Chart will be loaded by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Quick Stats -->
+                <div class="chart-container">
+                    <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                    <div style="margin-top: 1rem;">
+                        <button class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;" 
+                                onclick="window.location.href='learning.html'">
+                            <i class="fas fa-play"></i> Continue Learning
+                        </button>
+                        <button class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;"
+                                onclick="window.location.href='premium.html'">
+                            <i class="fas fa-crown"></i> Upgrade to Premium
+                        </button>
+                        <button class="btn btn-primary" style="width: 100%;"
+                                onclick="shareReferral()">
+                            <i class="fas fa-share-alt"></i> Share Referral
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Referral Section -->
+            <div class="referral-section" id="referrals">
+                <h2><i class="fas fa-handshake"></i> Referral Program</h2>
+                <p>Earn 40% commission on every premium purchase through your link</p>
+                
+                <div class="referral-link">
+                    <span id="referralLink">Loading...</span>
+                    <button class="btn btn-primary" onclick="copyReferralLink()">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                    <div>
+                        <h3>Total Earnings</h3>
+                        <div class="stat-value" id="totalEarnings">$0</div>
+                    </div>
+                    <div>
+                        <h3>This Month</h3>
+                        <div class="stat-value" id="monthlyEarnings">$0</div>
+                    </div>
+                    <div>
+                        <h3>Total Referrals</h3>
+                        <div class="stat-value" id="totalReferrals">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Withdrawal Section -->
+            <div class="withdrawal-section" id="withdraw">
+                <h2><i class="fas fa-wallet"></i> Withdraw Commission</h2>
+                <p>Minimum withdrawal: $20 (USDT TRC-20 only)</p>
+                
+                <div class="withdrawal-form">
+                    <input type="text" id="usdtAddress" placeholder="Your USDT (TRC-20) Address">
+                    <input type="number" id="withdrawAmount" placeholder="Amount (Minimum $20)" min="20" step="0.01">
+                    <button class="btn btn-primary" id="withdrawBtn" onclick="processWithdrawal()" disabled>
+                        <i class="fas fa-paper-plane"></i> Withdraw Now
+                    </button>
+                    <div id="withdrawMessage" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- TradingView Charting Library -->
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    
+    <script>
+        // User Authentication Check
+        function checkAuth() {
+            const token = localStorage.getItem('userToken');
+            const userName = localStorage.getItem('userName');
+            const userEmail = localStorage.getItem('userEmail');
+            
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Update user info
+            document.getElementById('userName').textContent = userName || 'User';
+            document.getElementById('userAvatar').textContent = userName ? userName.charAt(0).toUpperCase() : 'U';
+            
+            // Generate referral code if not exists
+            if (!localStorage.getItem('userReferralCode')) {
+                const code = 'TM' + Math.random().toString(36).substr(2, 8).toUpperCase();
+                localStorage.setItem('userReferralCode', code);
+            }
+            
+            updateDashboard();
+        }
+
+        // Update Dashboard Data
+        function updateDashboard() {
+            // Mock data for demonstration
+            const mockData = {
+                totalBalance: 1250.50,
+                commissionEarned: 342.75,
+                activeReferrals: 8,
+                learningProgress: 45,
+                totalEarnings: 1245.30,
+                monthlyEarnings: 342.75,
+                totalReferrals: 24,
+                referralLink: window.location.origin + '/signup?ref=' + localStorage.getItem('userReferralCode')
+            };
+
+            // Update DOM elements
+            document.getElementById('totalBalance').textContent = '$' + mockData.totalBalance.toFixed(2);
+            document.getElementById('commissionEarned').textContent = '$' + mockData.commissionEarned.toFixed(2);
+            document.getElementById('activeReferrals').textContent = mockData.activeReferrals;
+            document.getElementById('learningProgress').textContent = mockData.learningProgress + '%';
+            document.getElementById('totalEarnings').textContent = '$' + mockData.totalEarnings.toFixed(2);
+            document.getElementById('monthlyEarnings').textContent = '$' + mockData.monthlyEarnings.toFixed(2);
+            document.getElementById('totalReferrals').textContent = mockData.totalReferrals;
+            document.getElementById('referralLink').textContent = mockData.referralLink;
+            
+            // Update balance info
+            document.getElementById('balanceInfo').innerHTML = `
+                <div style="text-align: right;">
+                    <div style="font-size: 0.9rem; color: #cccccc;">Available Balance</div>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: #00ff88;">
+                        $${mockData.commissionEarned.toFixed(2)}
+                    </div>
+                </div>
+            `;
+
+            // Check withdrawal button
+            updateWithdrawButton();
+        }
+
+        // Initialize Trading Chart
+        function initTradingChart() {
+            const chartContainer = document.getElementById('tradingChart');
+            
+            // Create chart
+            const chart = LightweightCharts.createChart(chartContainer, {
+                width: chartContainer.clientWidth,
+                height: 400,
+                layout: {
+                    backgroundColor: 'transparent',
+                    textColor: '#cccccc',
+                },
+                grid: {
+                    vertLines: {
+                        color: 'rgba(255, 255, 255, 0.1)',
+                    },
+                    horzLines: {
+                        color: 'rgba(255, 255, 255, 0.1)',
+                    },
+                },
+                timeScale: {
+                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                },
+            });
+
+            // Add candlestick series
+            const candlestickSeries = chart.addCandlestickSeries({
+                upColor: '#00ff88',
+                downColor: '#ff4444',
+                borderVisible: false,
+                wickUpColor: '#00ff88',
+                wickDownColor: '#ff4444',
+            });
+
+            // Mock data (replace with Binance API)
+            const mockCandleData = generateMockCandleData();
+            candlestickSeries.setData(mockCandleData);
+
+            // Update with real data
+            updateRealTimeData(candlestickSeries);
+        }
+
+        // Generate mock candle data
+        function generateMockCandleData() {
+            const data = [];
+            let time = new Date();
+            let price = 50000;
+            
+            for (let i = 0; i < 100; i++) {
+                const open = price;
+                const close = open + (Math.random() - 0.5) * 1000;
+                const high = Math.max(open, close) + Math.random() * 500;
+                const low = Math.min(open, close) - Math.random() * 500;
+                
+                data.push({
+                    time: time.getTime() / 1000,
+                    open: open,
+                    high: high,
+                    low: low,
+                    close: close,
+                });
+                
+                time.setMinutes(time.getMinutes() - 5);
+                price = close;
+            }
+            
+            return data.reverse();
+        }
+
+        // Update with real-time data (Binance API)
+        async function updateRealTimeData(series) {
+            try {
+                // Binance WebSocket connection
+                const socket = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@kline_1m');
+                
+                socket.onmessage = function(event) {
+                    const data = JSON.parse(event.data);
+                    const candle = data.k;
+                    
+                    series.update({
+                        time: candle.t / 1000,
+                        open: parseFloat(candle.o),
+                        high: parseFloat(candle.h),
+                        low: parseFloat(candle.l),
+                        close: parseFloat(candle.c),
+                    });
+                };
+            } catch (error) {
+                console.error('Binance connection error:', error);
+                // Fallback to mock updates
+                setInterval(() => {
+                    const lastPrice = series.dataByIndex(series.data().length - 1).close;
+                    const newPrice = lastPrice + (Math.random() - 0.5) * 100;
+                    
+                    series.update({
+                        time: Date.now() / 1000,
+                        open: lastPrice,
+                        high: newPrice + 50,
+                        low: newPrice - 50,
+                        close: newPrice,
+                    });
+                }, 5000);
+            }
+        }
+
+        // Copy Referral Link
+        function copyReferralLink() {
+            const link = document.getElementById('referralLink').textContent;
+            navigator.clipboard.writeText(link).then(() => {
+                alert('Referral link copied to clipboard!');
+            });
+        }
+
+        // Share Referral
+        function shareReferral() {
+            const link = document.getElementById('referralLink').textContent;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Join TradeMaster Pro',
+                    text: 'Learn trading and earn with me!',
+                    url: link,
+                });
+            } else {
+                copyReferralLink();
+            }
+        }
+
+        // Update Withdraw Button
+        function updateWithdrawButton() {
+            const amount = parseFloat(document.getElementById('withdrawAmount').value) || 0;
+            const address = document.getElementById('usdtAddress').value;
+            const balance = 342.75; // Mock balance
+            
+            const btn = document.getElementById('withdrawBtn');
+            
+            if (address && amount >= 20 && amount <= balance) {
+                btn.disabled = false;
+                btn.className = 'btn btn-primary';
+            } else {
+                btn.disabled = true;
+                btn.className = 'btn btn-disabled';
+            }
+        }
+
+        // Process Withdrawal
+        function processWithdrawal() {
+            const amount = parseFloat(document.getElementById('withdrawAmount').value);
+            const address = document.getElementById('usdtAddress').value;
+            const messageDiv = document.getElementById('withdrawMessage');
+            
+            if (amount < 20) {
+                messageDiv.innerHTML = '<span style="color: #ff4444;">Minimum withdrawal is $20</span>';
+                return;
+            }
+            
+            if (!address || !address.startsWith('T')) {
+                messageDiv.innerHTML = '<span style="color: #ff4444;">Please enter a valid TRC-20 USDT address</span>';
+                return;
+            }
+            
+            // Mock withdrawal processing
+            messageDiv.innerHTML = '<span style="color: #00ff88;">Processing withdrawal...</span>';
+            
+            setTimeout(() => {
+                messageDiv.innerHTML = `
+                    <span style="color: #00ff88;">
+                        <i class="fas fa-check-circle"></i> Withdrawal successful!
+                        $${amount.toFixed(2)} will be sent to your USDT address within 24 hours.
+                    </span>
+                `;
+                
+                // Clear form
+                document.getElementById('withdrawAmount').value = '';
+                document.getElementById('usdtAddress').value = '';
+                updateWithdrawButton();
+            }, 2000);
+        }
+
+        // Logout
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            initTradingChart();
+            
+            // Update withdraw button on input
+            document.getElementById('withdrawAmount').addEventListener('input', updateWithdrawButton);
+            document.getElementById('usdtAddress').addEventListener('input', updateWithdrawButton);
+            
+            // Update data every 30 seconds
+            setInterval(updateDashboard, 30000);
+        });
+    </script>
+</body>
+</html>
